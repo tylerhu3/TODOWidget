@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hu.tyler.todowidget">
+
+    <!-- Permission to receive boot completed intent or broadcast -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/roundedicon3"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/roundedicon3"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+
+                <!-- intent will open up the main activity... dont understand the category section -->
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".TodoWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/todo_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".TodoService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <!-- <activity android:name=".MainActivity"></activity> -->
+        <activity android:name=".Transparency"></activity>
+
+        <!-- Broadcast receiver that responds when phone successfully boots -->
+        <receiver
+            android:name=".PhoneBootCompleteReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".ChangeTODO"
+            android:excludeFromRecents="true"
+            android:windowSoftInputMode="stateVisible"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
+    </application>
+    <!--android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>-->
+</manifest>

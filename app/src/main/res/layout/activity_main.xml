@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.hu.tyler.todowidget.MainActivity">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:gravity="left"
+            android:id="@+id/title"
+            android:layout_height="wrap_content"
+            android:text="Instructions:\n
+1.	Go to Home Screen.\n
+2.	Long Press on an empty part of the screen. (Edit Home options should pop up)\n
+3.	Click on Widgets.\n
+4.	Find TODO WIDGET\n
+5.	Drag and drop on a screen with adequate space.\n
+6.	Resize as needed.\n\n
+FAQ:\n
+Nothing shows up on my TODO widget?\n
+Refresh the widget by long pressing and then resize it and it should work.
+Also make sure app has storage permission, your TODOs are stored on your internal drive
+on a file call todolist.json, try not to alter this file if you don't know how to edit json files.
+\n\n
+About Me:\n
+I’m a technology enthusiast as well as a computer science student, I made this project because I wanted to easily keep track of things I want to learn and do. Also, the artwork I used is slightly altered by me but isn’t my own, I found the art from the google but had trouble tracking the actual creator, if you are the creator please contact me so I can give you credit for you artwork, cheers.
+"
+            android:textSize="20dp"
+            android:textColor="#101"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            tools:layout_constraintRight_creator="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            tools:layout_constraintLeft_creator="1"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
