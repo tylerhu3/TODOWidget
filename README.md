@@ -1,7 +1,7 @@
 # TODOWidget
-# Latest Revision: 12/21/2017
-# This is a implementation of ListView via RemoteViews as a fun to do project
-# Here is the actual link to the App itself on Google Play: 
+ Latest Revision: 12/21/2017
+ This is a implementation of ListView via RemoteViews as a fun project
+ Here is the actual link to the App itself on Google Play: 
 https://play.google.com/store/apps/details?id=com.hu.tyler.todowidget&hl=en
 
 The .java files are located in: TODOWidget/app/src/main/java/com/hu/tyler/todowidget/
