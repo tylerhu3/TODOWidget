@@ -32,7 +32,7 @@ ChangeTodo.java - This is executed which a item on the list is clicked basically
 
 ...More to come in the future and screenshots below:
 <div>
-<img src="https://user-images.githubusercontent.com/30193978/34647585-b3aae09a-f33a-11e7-99e4-8b42779d7379.jpg"  width="400" height="750">
+<img src="https://user-images.githubusercontent.com/30193978/34647585-b3aae09a-f33a-11e7-99e4-8b42779d7379.jpg"  width="400" height="700">
 <img src="https://user-images.githubusercontent.com/30193978/34647557-1fa82a9c-f33a-11e7-88c7-b4f1fecd12be.jpg"   width="440" height="790">
  </div>
  
