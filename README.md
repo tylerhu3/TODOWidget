@@ -31,3 +31,10 @@ TodoItem.java - For each item in the list, it holds a few attributes other than 
 ChangeTodo.java - This is executed which a item on the list is clicked basically opens a small activity window with some buttons and a edittext box for the user to alter whats in that TodoItem.
 
 ...More to come in the future.
+
+<img src="https://user-images.githubusercontent.com/30193978/34647557-1fa82a9c-f33a-11e7-88c7-b4f1fecd12be.jpg" width="400" height="790">
+<img src="https://user-images.githubusercontent.com/30193978/34647558-1fc2511a-f33a-11e7-9455-210018317ac3.jpg" width="400" height="790">
+<img src="https://user-images.githubusercontent.com/30193978/34647559-1fdda118-f33a-11e7-9614-4012ffb7f0b4.jpg" width="400" height="790">
+<img src="https://user-images.githubusercontent.com/30193978/34647560-1ff5be60-f33a-11e7-92fa-7f894619ce8b.jpg" width="400" height="790">
+<img src="https://user-images.githubusercontent.com/30193978/34647561-200f3fde-f33a-11e7-8569-6e8c56933367.jpg" width="400" height="790">
+<img src="https://user-images.githubusercontent.com/30193978/34647562-202a8f3c-f33a-11e7-8d7b-3e380f6bdca8.jpg" width="400" height="790">
