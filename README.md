@@ -1,4 +1,6 @@
 # TODOWidget
+Note: This project only works for android 6 and below.
+
  Latest Revision: 12/21/2017
  This is a implementation of ListView via RemoteViews as a fun project
  Here is the actual link to the App itself on Google Play: 
