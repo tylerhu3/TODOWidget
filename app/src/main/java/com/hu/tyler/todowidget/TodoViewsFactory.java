@@ -1,20 +1,14 @@
 package com.hu.tyler.todowidget;
 
-import android.Manifest;
 import android.appwidget.AppWidgetManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import android.widget.Toast;
@@ -48,7 +42,7 @@ public class TodoViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     public TodoViewsFactory(Context ctxt, Intent intent) {
         this.ctxt = ctxt;
-//        Toast.makeText(ctxt, "TodoViewsFactory Activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(ctxt, "TodoViewsFactory Activated", Toast.LENGTH_SHORT).show(); //DXD
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
         if (!openJson()) {
@@ -57,15 +51,16 @@ public class TodoViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         }
     }
 
+
     @Override
     public void onCreate() {
-//        Toast.makeText(ctxt, "onCreate Activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(ctxt, "onCreate Activated", Toast.LENGTH_SHORT).show(); //DXD
     //onCreate of Widget
     }
 
     @Override
     public void onDestroy() {
-//        Toast.makeText(ctxt, "onDestroy Activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(ctxt, "onDestroy Activated", Toast.LENGTH_SHORT).show(); //DXD
         // no-op
     }
 
@@ -138,12 +133,12 @@ public class TodoViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     //If any changes happen, onDataSetChanged() will execute and reread the list
     @Override
     public void onDataSetChanged() {
-        //Log.d("XVX", "onDataSetChanged ran.");
+        Log.d("XVX", "onDataSetChanged ran.");
         try {
             openJson();
         } catch (Exception e) {
             e.printStackTrace();
-            //Log.d("XVX", "json todolist.json was not read successfully");
+            Log.d("XVX", "json todolist.json was not read successfully");
             //  Log.d("XVX", "Loading from Assets");
             todoItems = loadJSONFromAsset();
 

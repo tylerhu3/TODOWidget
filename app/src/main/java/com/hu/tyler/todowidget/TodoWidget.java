@@ -1,16 +1,13 @@
 package com.hu.tyler.todowidget;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -27,7 +24,7 @@ public class TodoWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-//        Toast.makeText(context, "On Received Activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(context, "On Received Activated", Toast.LENGTH_SHORT).show(); //DXD
 
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetComponent = new ComponentName(context, TodoWidget.class);
@@ -38,7 +35,7 @@ public class TodoWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-//        Toast.makeText(context, "updateAppWidget activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(context, "updateAppWidget activated", Toast.LENGTH_SHORT).show(); //DXD
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.todo_widget);
@@ -47,11 +44,9 @@ public class TodoWidget extends AppWidgetProvider {
     }
 
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-//        Toast.makeText(context, "onUpdate activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(context, "onUpdate activated", Toast.LENGTH_SHORT).show(); //DXD
 //        final ApplicationInfo info = context.getApplicationInfo(); //DXD
 //        final String tag = info != null ? info.name : TAG; //DXD
 
@@ -78,11 +73,9 @@ public class TodoWidget extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
     private RemoteViews initViews(Context context,
                                   AppWidgetManager widgetManager, int widgetId) {
-//        Toast.makeText(context, "initViews activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(context, "initViews activated", Toast.LENGTH_SHORT).show(); //DXD
         RemoteViews mView = new RemoteViews(context.getPackageName(),
                 R.layout.todo_widget);
 
@@ -113,7 +106,7 @@ public class TodoWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
 
-//        Toast.makeText(context, "onEnabled activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(context, "onEnabled activated", Toast.LENGTH_SHORT).show(); //DXD
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetComponent = new ComponentName(context, TodoWidget.class);
         int[] appWidgetIds = widgetManager.getAppWidgetIds(widgetComponent);
@@ -127,7 +120,7 @@ public class TodoWidget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
-//        Toast.makeText(context, "onRestored Activated", Toast.LENGTH_SHORT).show(); //DXD
+        Toast.makeText(context, "onRestored Activated", Toast.LENGTH_SHORT).show(); //DXD
     }
 }
 

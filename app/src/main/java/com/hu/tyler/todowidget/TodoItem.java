@@ -18,14 +18,6 @@ public class TodoItem {
         //Log.d("XXX", "TodoItem Default Constructor Executed");
     }
 
-    TodoItem(String item, int x,  String extra)
-    {
-        //Normal Constructor
-        strike = x;
-        this.item = item;
-        this.extra = extra;
-    }
-
     TodoItem(String y, int x,  String extra, String description)
     {
         //Normal Constructor #2

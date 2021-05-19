@@ -100,14 +100,6 @@ public class ChangeTODO extends Activity implements View.OnClickListener {
         imm.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
     }
 
-    public void swap(TodoItem x, TodoItem y)
-    {
-        TodoItem temp = x;
-        x = y;
-        y = temp;
-    }
-
-
     @Override
     //This method handles all the clicks
     public void onClick(View v) {
