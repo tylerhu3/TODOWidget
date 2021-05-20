@@ -70,7 +70,7 @@ public class TodoViewsFactory implements RemoteViewsService.RemoteViewsFactory {
             ///mView.setImageViewResource(android.R.id.text1,(Color.parseColor("#FFFFFF")));
             //Indicated as a normal item
             mView.setTextColor(android.R.id.text1, (Color.parseColor("#000000")));
-            mView.setImageViewResource(R.id.checkboxPicture, R.drawable.rowimageempty);
+            mView.setImageViewResource(R.id.checkboxPicture, R.drawable.rowimageempty_no_shadow);
             mView.setInt(android.R.id.text1, "setPaintFlags", Paint.HINTING_OFF | Paint.ANTI_ALIAS_FLAG);
         } else if (todoItems.get(position).strike == 2) {
             //TODO : this needs to be redone later, as of now, this will never be encounter
