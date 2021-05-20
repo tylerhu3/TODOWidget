@@ -2,8 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="match_parent"
+
+    android:padding="15dp"
+    android:layout_width="340dp"
+    android:background="@drawable/change_todo_background"
+    android:layout_height="wrap_content"
     tools:context="com.hu.tyler.todowidget.ChangeTODO">
 
 
@@ -11,16 +14,16 @@
         android:id="@+id/editTODOInput"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Enter New TODO Here"
         android:layout_marginBottom="80dp"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="left"
         android:selectAllOnFocus="true"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Enter New TODO Here"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <LinearLayout
         android:id="@+id/buttonViewHolder"
@@ -41,17 +44,17 @@
 
         <Button
             android:id="@+id/xOut"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onClick"
             android:text="Completed" />
 
         <Button
             android:id="@+id/deleteButton"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onClick"
             android:text="Delete" />
 
@@ -61,29 +64,30 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/buttonViewHolder"
 
-        app:layout_constraintTop_toBottomOf="@+id/buttonViewHolder">
+        tools:layout_constraintTop_creator="1">
 
         <Button
-            android:id="@+id/priorityButton"
+            android:id="@+id/upButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="⇑"
-            android:layout_weight="1"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bottomSide"
             android:layout_weight="1"
-            android:text="⇓"/>
+            android:text="⇑" />
+
+        <Button
+            android:id="@+id/downButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⇓" />
 
         <Button
             android:id="@+id/cancel_btn_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="Cancel" />
     </LinearLayout>
 
 

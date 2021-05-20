@@ -8,29 +8,22 @@ package com.hu.tyler.todowidget;
  */
 public class TodoItem {
 
-    public String item;
-    public int strike;
-    public String extra;
-    public String description;
-    TodoItem()
-    {
-        //Default Constuctor
-        //Log.d("XXX", "TodoItem Default Constructor Executed");
-    }
 
-    TodoItem(String y, int x,  String extra, String description)
+    public String text;
+    public int strike; //0 means no strike, 1 means strike thru text, 2 means high priority
+
+
+    TodoItem(String y, int x)
     {
         //Normal Constructor #2
         strike = x;
-        item = y;
-        this.extra = extra;
-        this.description = description;
+        text = y;
     }
 
     //This marks the string of the actual item
-    public void setItem(String item)
+    public void setText(String text)
     {
-        this.item = item;
+        this.text = text;
     }
 
     //Should the item be cross out?
@@ -40,9 +33,4 @@ public class TodoItem {
         strike = x;
     }
 
-
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
 }

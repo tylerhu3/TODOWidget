@@ -7,37 +7,26 @@ package com.hu.tyler.todowidget;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Intent;
-import android.content.res.AssetManager;
-import android.os.Environment;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Writer;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class ChangeTODO extends Activity implements View.OnClickListener {
-    public JSONArray jsonArray = null;
-    public ArrayList<TodoItem> locList = null;
-    public int positionToChange;
-    public String todoItem = null;
 
-    Button ok_btn, cancel_btn, xbutton, priorityButton, warpButton;
+    ArrayList<TodoItem> locList = null;
+    int positionToChange;
+    String todoItem = null;
+    SavedPreferences savedPreferences;
+    final String TODO_TITLE = "TodoTitle";
+    final String TODO_STRIKE_TYPE = "TodoStrikeType";
+
+    Button ok_btn, cancel_btn, xbutton, upButton, downButton;
     EditText input;
 
     @Override
@@ -55,13 +44,8 @@ public class ChangeTODO extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
 
-        Boolean fileExist = openJson();
-        if (fileExist == false) {
-            // Log.d("XVX", "json todolist was not read ");
-            showToastMessage("JSON file was not read properly, App does not have permission, or file" +
-                    "was deleted.");
-            locList = loadJSONFromAsset();
-        }
+        savedPreferences = SavedPreferences.getInstance(getApplicationContext());
+        locList = LoadDataFromSavedPrefs();
         //Connect .java file to .xml file
         setContentView(R.layout.activity_change_todo);
 
@@ -71,24 +55,21 @@ public class ChangeTODO extends Activity implements View.OnClickListener {
         input = findViewById(R.id.editTODOInput);
         ok_btn = findViewById(R.id.ok_btn_id);
         cancel_btn = findViewById(R.id.cancel_btn_id);
-        priorityButton = findViewById(R.id.priorityButton);
-        warpButton = findViewById(R.id.bottomSide);
+        upButton = findViewById(R.id.upButton);
+        downButton = findViewById(R.id.downButton);
         xbutton = findViewById(R.id.xOut);
 
         //for every one of the buttons, have them listen for a click;
         //the xml file has a property under each of those items to tell it what method to go to
-        warpButton.setOnClickListener(this);
+        downButton.setOnClickListener(this);
         xbutton.setOnClickListener(this);
         ok_btn.setOnClickListener(this);
         cancel_btn.setOnClickListener(this);
-        priorityButton.setOnClickListener(this);
+        upButton.setOnClickListener(this);
 
         //Below grabs the String that was typed into the editTextBox and the element number of that box
         todoItem = getIntent().getStringExtra(TodoWidget.EXTRA_WORD);
         positionToChange = getIntent().getIntExtra("EXTRA_INT", 0); //element number
-        //int strike = getIntent().getIntExtra("strikeText", 0); //element number
-        //String descriptionText = getIntent().getStringExtra("description");
-
 
         /*Dealing with the EditBox Box: I want to highlight everything then open the force open
          the soft keyboard. Also "android:windowSoftInputMode="stateVisible" ", must be added to
@@ -112,22 +93,22 @@ public class ChangeTODO extends Activity implements View.OnClickListener {
 
             case R.id.ok_btn_id: //OK BUTTON
                 //showToastMessage("Ok Button Clicked; word : " + todoItem + " @ # " + positionToChange);
-                locList.get(positionToChange).setItem(input.getText().toString());
-                outJson();
+                locList.get(positionToChange).setText(input.getText().toString());
+                outputToSavePrefs(positionToChange);
                 updateWidget();
                 finish();
                 break;
 
             case R.id.xOut: //COMPLETED BUTTON
                 //showToastMessage("Ok Button Clicked; word : " + todoItem + " @ # " + positionToChange);
-                locList.get(positionToChange).setItem(input.getText().toString());
+                locList.get(positionToChange).setText(input.getText().toString());
                 int x = locList.get(positionToChange).strike;
                 if (x == 0 || x == 2) {
                     locList.get(positionToChange).setStrike(1);
                 } else {
                     locList.get(positionToChange).setStrike(0);
                 }
-                outJson();
+                outputToSavePrefs(positionToChange);
                 updateWidget();
                 finish();
                 break;
@@ -136,85 +117,54 @@ public class ChangeTODO extends Activity implements View.OnClickListener {
                 // showToastMessage("Cancel Button Clicked");
                 finish();
                 break;
-            case R.id.priorityButton: //ARROW UP BUTTON
-                TodoItem xx2; // create a new item call xx2; then put that item on the very top
-                // of the list
-                //Decides what happen based on what was the previous strike value of the item
-//                if (locList.get(positionToChange).strike == 0) {
-//                    xx2 = new TodoItem(input.getText().toString(), 2, "", "");
-//                    //showToastMessage("strike == 0");
-//                    locList.remove(positionToChange); // this aint happening
-//                    locList.add(0, xx2);
-//                } else if (locList.get(positionToChange).strike == 1) {
-//                    //showToastMessage("strike == 1");
-//                    xx2 = new TodoItem(input.getText().toString(), 2, "", "");
-//                    locList.remove(positionToChange); // this aint happening
-//                    locList.add(0, xx2);
-//                } else if (locList.get(positionToChange).strike == 2) {
-//                    //showToastMessage("strike == 2");
-//                    //xx2 = new TodoItem(input.getText().toString(), 0, "", "");
-//                    locList.get(positionToChange).setStrike(0);
-//                }
-
+            case R.id.upButton: //ARROW UP BUTTON
                 if(positionToChange == 0)
-                {
-                    showToastMessage("Lowest Position");
-                    break;
-                }
-                Collections.swap(locList,positionToChange, (positionToChange - 1));
-                positionToChange--;
-                outJson(); // output the edits into the JSON text file
-                updateWidget(); //update the widget
-//                finish(); // Close the activity
-                break;
-            case R.id.deleteButton: //DELETE BUTTON
-                //showToastMessage("Delete button Clicked");
-                locList.remove(positionToChange);
-                TodoItem xx = new TodoItem("", 0, "", "");
-                locList.add(xx);
-                outJson();
-                updateWidget();
-                finish();
-                break;
-
-            case R.id.bottomSide: // ARROW DOWN BUTTON
-                //showToastMessage("Warp button Clicked");
-                //This case takes a selected item and moves it to the bottom of the list
-                //TodoItem newItem = new TodoItem(locList.get(positionToChange).item, locList.get(positionToChange).strike, "", "");
-                //locList.add(newItem);
-//                for (int i = locList.size() - 1; i >= 0; i--) {
-//                    if (locList.get(i).item.equals("")) {
-//                        //Log.d("XLoop", "Position: " + i + " is free");
-//                        locList.get(i).item = locList.get(positionToChange).item;
-//                        locList.get(i).strike = locList.get(positionToChange).strike;
-//                        break;
-//
-//                    }
-//                }
-//                locList.remove(positionToChange);
-                if(positionToChange == locList.size()-1)
                 {
                     showToastMessage("Highest Position");
                     break;
                 }
-                Collections.swap(locList,positionToChange, (positionToChange + 1));
-                positionToChange++;
-                outJson();
+                Collections.swap(locList,positionToChange, (positionToChange - 1));
+                outputToSavePrefs(positionToChange);
+                outputToSavePrefs(positionToChange - 1);
+                positionToChange--;
+                 // output the edits into the JSON text file
+                updateWidget(); //update the widget
+                break;
+            case R.id.deleteButton: //DELETE BUTTON
+                //showToastMessage("Delete button Clicked");
+                locList.remove(positionToChange);
+                TodoItem xx = new TodoItem("", 0);
+                locList.add(xx);
+                outputAllToSavedPref();
                 updateWidget();
-//                finish();
+                finish();
+                break;
+
+            case R.id.downButton: // ARROW DOWN BUTTON
+
+                if(positionToChange == locList.size()-1)
+                {
+                    showToastMessage("Lowest Position");
+                    break;
+                }
+                Collections.swap(locList,positionToChange, (positionToChange + 1));
+                outputToSavePrefs(positionToChange);
+                outputToSavePrefs(positionToChange + 1);
+                positionToChange++;
+                updateWidget();
                 break;
         }
     }
 
     public void updateWidget() {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
         int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
                 new ComponentName(this, TodoWidget.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.words);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewTodo);
     }
 
     void showToastMessage(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG)
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
                 .show();
     }
 
@@ -228,125 +178,43 @@ public class ChangeTODO extends Activity implements View.OnClickListener {
 
     public void goBackHome()  /// go back to home screen
     {
-        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-        homeIntent.addCategory(Intent.CATEGORY_HOME);
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(homeIntent);
+//        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+//        homeIntent.addCategory(Intent.CATEGORY_HOME);
+//        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(homeIntent);
         finish();
     }
 
     /*When the class is first executed, it looks for a JSON file and if it doesn't exist, it takes the original json I have
     * put into this project and the method below simple reads that data and puts it into arraylist call "loclist"*/
-    public ArrayList<TodoItem> loadJSONFromAsset() { ///if json file doesn't exist, read from apk.
+    public ArrayList<TodoItem> LoadDataFromSavedPrefs() { ///if json file doesn't exist, read from apk.
+        ArrayList<TodoItem> todoItems = new ArrayList<>();
 
-        //  Log.d("XVX", "Transparency::loadJSONFromAsset execution");
-        ArrayList<TodoItem> locList = new ArrayList<>();
-        String json = null;
-        try {
-            AssetManager assetManager = this.getAssets();
-            InputStream is = assetManager.open("todolist.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            //return null;
+        for (int i = 0; i < 88; i++) {
+            TodoItem x = new TodoItem(
+                    savedPreferences.get(TODO_TITLE + i, ""),
+                    savedPreferences.get(TODO_STRIKE_TYPE + i, 0)
+            );
+            todoItems.add(x);
         }
-        try {
-            JSONObject obj = new JSONObject(json);
-            JSONArray jsonArray = obj.getJSONArray("Questions");
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject o = jsonArray.getJSONObject(i);
-                TodoItem x = new TodoItem(o.getString("title"), o.getInt("strike"), o.getString("extra"), o.getString("description"));
-
-                locList.add(x);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return locList;
+        return todoItems;
     }
 
     /*This method updates the json file held in the SD card, for the future it's probably a good idea
 * to change the director to something else besides /sdcard; apparently not all phones have the sdcard
 * directory as /sdcard, so using the Environment class would be a better idea
 * Reminder: A JSON array must be put into a JSON object before it can be put into a external file*/
-    public void outJson() { //outputs and overwrites current json file in sdcard
-        //Log.d("XVX", "outJson execution");
-        JSONArray mJSONArray = new JSONArray();
-        JSONObject toOutFile = new JSONObject();
-        for (int i = 0; i < locList.size(); i++) {
-            try {
-                JSONObject xxx = new JSONObject();
-                xxx.put("title", locList.get(i).item);
-                xxx.put("strike", locList.get(i).strike);
-                xxx.put("extra", locList.get(i).extra);
-                xxx.put("description", locList.get(i).description);
-                mJSONArray.put(xxx);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            toOutFile.put("Questions", mJSONArray); // this is where json array is put into jsonObject
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            Writer output = null;
-            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/todolist.json");
-            output = new BufferedWriter(new FileWriter(file));
-            output.write(toOutFile.toString());
-            output.close();
-//            Toast.makeText(getApplicationContext(), "Composition saved", Toast.LENGTH_SHORT).show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            //   Toast.makeText(getBaseContext(), "Widget requires permission!", Toast.LENGTH_SHORT).show();
-        }
-
+    void outputToSavePrefs(int i) { //outputs and overwrites current json file in sdcard
+        savedPreferences.put(TODO_TITLE + i, locList.get(i).text);
+        savedPreferences.put(TODO_STRIKE_TYPE + i, locList.get(i).strike);
     }
 
-    /*Not much to say, just opens the todolist.json file and then grabs all the text from it
-    * and puts it in the obj jsonobject made a static from up atop, I believe it doesn't need to be
-    * a static, should change in future revisions but will leave it for now.*/
-    public boolean openJson() { //opens the json file if there exists one in SD card
-        try {
-            // Log.d("XVX", "openJson execution");
-            File myFile = new File(Environment.getExternalStorageDirectory().getPath() + "/todolist.json");
-            //Log.d("XVX", "did myFile open successfully :" + myFile.exists());
-            if (!myFile.exists())
-                return false;
-            myFile.createNewFile();
-            FileInputStream fIn = new FileInputStream(myFile);
-            BufferedReader Reader = new BufferedReader(new InputStreamReader(fIn));
-            String aDataRow = "", aBuffer = "";
-
-            while ((aDataRow = Reader.readLine()) != null)
-                aBuffer += aDataRow;
-
-            Reader.close();
-
-            JSONObject obj = new JSONObject(aBuffer);
-            jsonArray = obj.getJSONArray("Questions");
-
-            locList = new ArrayList<>();
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject o = jsonArray.getJSONObject(i);
-                TodoItem x = new TodoItem(o.getString("title"), o.getInt("strike"), o.getString("extra"), o.getString("description"));
-                locList.add(x);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, e.getMessage(),
-                    Toast.LENGTH_SHORT).show();
-            return false;
+    void outputAllToSavedPref() {
+        savedPreferences = SavedPreferences.getInstance(getApplicationContext());
+        for (int i = 0; i < 88; i++) {
+            savedPreferences.put(TODO_TITLE + i, locList.get(i).text);
+            savedPreferences.put(TODO_STRIKE_TYPE + i, locList.get(i).strike);
         }
-        return true;
     }
 
 }

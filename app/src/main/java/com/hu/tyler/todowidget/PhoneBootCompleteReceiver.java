@@ -23,7 +23,6 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * Created by tyler on 8/15/2017.
@@ -40,7 +39,7 @@ public class PhoneBootCompleteReceiver extends BroadcastReceiver {
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                 int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
                         new ComponentName(context, TodoWidget.class));
-                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.words);
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewTodo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
